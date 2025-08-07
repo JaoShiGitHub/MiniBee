@@ -156,7 +156,9 @@ const customerAddOrder = async (req, res) => {
 
     return res.status(200).json({ message: "Order has been created" });
   } catch (error) {
-    return res.json({ message: `Failed to add new order: ${error.message}` });
+    return res
+      .status(500)
+      .json({ message: `Failed to add new order: ${error.message}` });
   }
 };
 
@@ -191,7 +193,7 @@ const customerEditInfo = async (req, res) => {
         customer_id,
       ]
     );
-    return res.json({ message: "Customer info has been updated" });
+    return res.status(200).json({ message: "Customer info has been updated" });
   } catch (error) {
     return res.json({
       message: `Failed to edit customer info: ${error.message}`,
@@ -203,7 +205,7 @@ const customerEditInfo = async (req, res) => {
 const customerInfo = async (req, res) => {
   const customer_id = req.customer.id;
   try {
-    const info = await pool.query("SELECT * FROM customers WHERE id = $1", [
+    const info = await pool.query(`SELECT * FROM customers WHERE id = $1`, [
       customer_id,
     ]);
 
@@ -212,7 +214,7 @@ const customerInfo = async (req, res) => {
       user_data: info?.rows[0],
     });
   } catch (error) {
-    return res.json({
+    return res.status(500).json({
       message: `Failed to get customer info: ${error.message}`,
     });
   }
@@ -223,7 +225,7 @@ const customerDeleteAccount = async (req, res) => {
   const customer_id = req.customer.id;
 
   try {
-    await pool.query("DELETE FROM customers WHERE id = $1", [customer_id]);
+    await pool.query(`DELETE FROM customers WHERE id = $1`, [customer_id]);
 
     res.clearCookie("token", {
       httpOnly: true,

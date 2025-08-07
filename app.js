@@ -10,7 +10,7 @@ import customer from "./routers/customer_routes.js";
 import order from "./routers/order_routes.js";
 import authUser from "./middlewares/auth.js";
 
-app.use(express.json({ limit: "10mb" })); // allows Express to read and understand JSON data sent in the body of a request.
+app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(
   cors({
@@ -23,7 +23,7 @@ app.use("/customer", customer);
 app.use("/menu", menu);
 app.use("/order", order);
 
-app.get("/checkme", authUser, (req, res) => {
+app.get("/check-user", authUser, (req, res) => {
   try {
     return res.status(200).json({
       success: true,

@@ -22,7 +22,7 @@ const customer = Router();
 customer.post("/login", validateLoginCustomer, customerLogin);
 customer.post("/register", validateRegisterCustomer, customerRegister);
 customer.post("/order", authUser, customerAddOrder);
-customer.post("/logout", customerLogout); // Note: Logout doesn't need authUser
+customer.post("/logout", customerLogout);
 // GET
 customer.get("/info", authUser, customerInfo);
 // EDIT

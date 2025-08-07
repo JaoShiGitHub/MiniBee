@@ -77,7 +77,7 @@ const deleteOrderHistory = async (req, res) => {
 
     return res.status(200).json({ message: "Order deleted successfully" });
   } catch (error) {
-    res.jason({ message: error.message });
+    res.json({ message: error.message });
   }
 };
 
