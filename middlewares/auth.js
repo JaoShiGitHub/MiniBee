@@ -4,8 +4,6 @@ const authUser = (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) {
-    console.log("Not authorized. Please login again.");
-
     return res
       .status(401)
       .json({ success: false, message: "Not authorized. Please login again." });
@@ -15,11 +13,10 @@ const authUser = (req, res, next) => {
     const decoded_token = jwt.verify(token, process.env.SECRET_KEY);
 
     if (!decoded_token) {
-      console.log("Invalid Token");
       return res.status(401).json({ message: "Invalid Token" });
     }
-    req.customer = decoded_token; // manually adds a new property called "customer" to the req object
-    console.log("next");
+
+    req.customer = decoded_token;
 
     next();
   } catch (error) {

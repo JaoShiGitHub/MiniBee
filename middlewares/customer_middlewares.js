@@ -1,3 +1,5 @@
+import { pool } from "../utils/db.js";
+
 // Login
 const validateLoginCustomer = async (req, res, next) => {
   const { identifier, password } = req.body;
@@ -49,4 +51,30 @@ const validateRegisterCustomer = async (req, res, next) => {
   next();
 };
 
-export { validateRegisterCustomer, validateLoginCustomer };
+const checkUserConflict = async (req, res, next) => {
+  const username = req.body.username;
+
+  try {
+    const response = await pool.query(
+      `SELECT * FROM customers WHERE username = $1`,
+      [username]
+    );
+
+    const user_account = response.rows[0];
+
+    if (user_account) {
+      console.log("The username is not available");
+
+      return res.status(409).json({
+        success: false,
+        message: "The username is not available. Please try another.",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+
+  next();
+};
+
+export { validateRegisterCustomer, validateLoginCustomer, checkUserConflict };
