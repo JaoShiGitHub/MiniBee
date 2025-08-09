@@ -15,12 +15,14 @@ import {
   customerLogin,
   customerLogout,
   customerDeleteAccount,
-} from "../controllers/customers.js";
+  orderHistory,
+  deleteOrderHistory,
+} from "../controllers/customer.js";
 import checkLogin from "../controllers/check_login.js";
 
 const customer = Router();
 
-// POST
+// ---- POST ----
 customer.post("/login", validateLoginCustomer, customerLogin);
 customer.post(
   "/register",
@@ -29,12 +31,14 @@ customer.post(
 );
 customer.post("/order", authUser, customerAddOrder);
 customer.post("/logout", customerLogout);
-// GET
+// ---- GET ----
 customer.get("/info", authUser, customerInfo);
 customer.get("/status", authUser, checkLogin);
-// EDIT
+customer.get("/order-history", authUser, orderHistory);
+// ---- EDIT ----
 customer.put("/edit", authUser, customerEditInfo);
-// DELETE
+// ---- DELETE ----
+customer.delete("/delete/order-history", authUser, deleteOrderHistory);
 customer.delete("/delete", authUser, customerDeleteAccount);
 
 export default customer;

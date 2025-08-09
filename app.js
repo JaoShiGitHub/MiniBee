@@ -7,7 +7,7 @@ dotenv.config();
 // Routes
 import menu from "./routers/menu_routes.js";
 import customer from "./routers/customer_routes.js";
-import order from "./routers/order_routes.js";
+import admin from "./routers/admin_routes.js";
 
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
@@ -20,7 +20,7 @@ app.use(
 
 app.use("/customer", customer);
 app.use("/menu", menu);
-app.use("/order", order);
+app.use("/admin", admin);
 
 app.listen(4000, () => {
   console.log("Server is listening at port 4000");
