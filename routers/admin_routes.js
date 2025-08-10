@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getOrders, getOrdersByCustomerID } from "../controllers/order.js";
-import { getAdmins } from "../controllers/admin.js";
+import { getAdminById, getAdmins } from "../controllers/admin.js";
 import { getCustomers } from "../controllers/customer.js";
 import { isAdmin, authUser } from "../middlewares/userAuth.js";
 
@@ -8,6 +8,7 @@ const adminRouter = Router();
 const adminMiddleware = [authUser, isAdmin];
 
 adminRouter.get("/", adminMiddleware, getAdmins);
+adminRouter.get("/admin", adminMiddleware, getAdminById);
 adminRouter.get("/customers", adminMiddleware, getCustomers);
 adminRouter.get("/customer-orders", adminMiddleware, getOrdersByCustomerID);
 adminRouter.post("/orders", adminMiddleware, getOrders);

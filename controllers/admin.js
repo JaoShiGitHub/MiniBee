@@ -19,4 +19,26 @@ const getAdmins = async (req, res) => {
   }
 };
 
-export { getAdmins };
+const getAdminById = async (req, res) => {
+  const admin_id = req.user.admin_id;
+  try {
+    const data = await pool.query("SELECT * FROM admins WHERE admin_id = $1", [
+      admin_id,
+    ]);
+    const admin = data.rows[0];
+
+    if (!admin) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    return res.status(200).json({ success: true, admin });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: "Server error", error: error.message });
+  }
+};
+
+export { getAdmins, getAdminById };

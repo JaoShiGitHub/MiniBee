@@ -62,7 +62,7 @@ const customerAddOrder = async (req, res) => {
     );
 
     const orderQueries = orders.map((order) => {
-      pool.query(
+      return pool.query(
         `INSERT INTO order_items (order_id, product_id ,product_name, product_price, amount) VALUES ($1, $2, $3, $4, $5)`,
         [order_id, order.menu_id, order.name, order.price, order.count]
       );
@@ -252,7 +252,7 @@ const customerDeleteOrderHistory = async (req, res) => {
 
     return res.status(200).json({ message: "Order deleted successfully" });
   } catch (error) {
-    res.json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
