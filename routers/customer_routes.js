@@ -1,6 +1,6 @@
 import { Router } from "express";
 // Middlewares
-import authUser from "../middlewares/userAuth.js";
+import { authUser } from "../middlewares/userAuth.js";
 // Controllers
 import {
   customerAddOrder,

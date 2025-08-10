@@ -2,12 +2,14 @@ import { Router } from "express";
 import { getOrders, getOrdersByCustomerID } from "../controllers/order.js";
 import { getAdmins } from "../controllers/admin.js";
 import { getCustomers } from "../controllers/customer.js";
+import { isAdmin, authUser } from "../middlewares/userAuth.js";
 
 const adminRouter = Router();
+const adminMiddleware = [authUser, isAdmin];
 
-adminRouter.get("/", getAdmins);
-adminRouter.get("/customers", getCustomers);
-adminRouter.get("/customer-orders", getOrdersByCustomerID);
-adminRouter.post("/orders", getOrders);
+adminRouter.get("/", adminMiddleware, getAdmins);
+adminRouter.get("/customers", adminMiddleware, getCustomers);
+adminRouter.get("/customer-orders", adminMiddleware, getOrdersByCustomerID);
+adminRouter.post("/orders", adminMiddleware, getOrders);
 
 export default adminRouter;

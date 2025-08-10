@@ -8,9 +8,9 @@ import {
   checkUserConflict,
   validateLoginCustomer,
   validateRegisterCustomer,
-} from "../middlewares/customer_middlewares.js";
+} from "../middlewares/customerValidation.js";
 import checkLogin from "../controllers/check_login.js";
-import authUser from "../middlewares/userAuth.js";
+import { authUser } from "../middlewares/userAuth.js";
 const authRouter = Router();
 
 authRouter.post(

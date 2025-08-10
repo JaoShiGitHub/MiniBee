@@ -37,6 +37,13 @@ const validateRegisterCustomer = async (req, res, next) => {
     email: req.body.email,
     birthday: req.body.birthday,
   };
+  const user = req.body.user_type;
+
+  if (user !== "customers" && user !== "admins") {
+    return res
+      .status(400)
+      .json({ message: "user type must be customers or admins only" });
+  }
 
   if (!requiredFields.username) {
     return res.status(400).json({ message: "Username is required!" });

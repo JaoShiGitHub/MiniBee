@@ -26,6 +26,13 @@ const authUser = (req, res, next) => {
   }
 };
 
-const authAdmin = async (req, res) => {};
+const isAdmin = async (req, res, next) => {
+  const user = req.customer.role;
 
-export default authUser;
+  if (user !== "admins") {
+    return res.status(403).json({ message: "Access forbidden: admins only" });
+  }
+  next();
+};
+
+export { authUser, isAdmin };
