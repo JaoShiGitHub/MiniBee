@@ -8,9 +8,17 @@ const loginUser = async (req, res) => {
   const { identifier, password, user_type } = req.body;
 
   const type = isEmail(identifier) ? "Email" : "Username";
+  const user = user_type.toLowerCase();
+
+  if (user !== "customers" && user !== "admins") {
+    return res
+      .status(400)
+      .json({ message: "user type must be customers or admins only" });
+  }
+
   try {
     const data = await pool.query(
-      `SELECT * FROM customers WHERE ${type.toLowerCase()} = $1`,
+      `SELECT * FROM ${user} WHERE ${type.toLowerCase()} = $1`,
       [identifier]
     );
 
@@ -31,6 +39,7 @@ const loginUser = async (req, res) => {
         id: customer.id,
         username: customer.username,
         firstName: customer.firstname,
+        role: user,
       },
       process.env.SECRET_KEY,
       {
@@ -66,13 +75,13 @@ const registerUser = async (req, res) => {
     user_type,
   } = req.body;
   const customer = { password: req.body.password };
-
+  const TABLE = user_type.toLowerCase();
   const salt = await bcrypt.genSalt(10);
   customer.password = await bcrypt.hash(customer.password, salt);
 
   try {
     await pool.query(
-      `INSERT INTO customers (username, password, firstname, lastname, tel, email, allergy, birthday ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      `INSERT INTO ${TABLE} (username, password, firstname, lastname, tel, email, allergy, birthday ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
       [
         username,
         customer.password,
