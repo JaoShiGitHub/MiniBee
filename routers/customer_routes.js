@@ -15,8 +15,8 @@ import {
   customerLogin,
   customerLogout,
   customerDeleteAccount,
-  orderHistory,
-  deleteOrderHistory,
+  customerOrderHistory,
+  customerDeleteOrderHistory,
 } from "../controllers/customer.js";
 import checkLogin from "../controllers/check_login.js";
 
@@ -34,11 +34,11 @@ customer.post("/logout", customerLogout);
 // ---- GET ----
 customer.get("/info", authUser, customerInfo);
 customer.get("/status", authUser, checkLogin);
-customer.get("/order-history", authUser, orderHistory);
+customer.get("/order-history", authUser, customerOrderHistory);
 // ---- EDIT ----
 customer.put("/edit", authUser, customerEditInfo);
 // ---- DELETE ----
-customer.delete("/delete/order-history", authUser, deleteOrderHistory);
+customer.delete("/delete/order-history", authUser, customerDeleteOrderHistory);
 customer.delete("/delete", authUser, customerDeleteAccount);
 
 export default customer;

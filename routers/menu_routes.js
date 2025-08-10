@@ -1,10 +1,18 @@
 import { Router } from "express";
-import { getMenu, insertMenu } from "../controllers/menu.js";
+import {
+  createMenu,
+  editMenu,
+  getMenu,
+  deleteMenu,
+} from "../controllers/menu.js";
 import authUser from "../middlewares/auth.js";
 
 const menu = Router();
 
 menu.get("/", authUser, getMenu);
-menu.post("/insert", authUser, insertMenu);
+// --v-- ADMIN ONLY --v--
+menu.post("/create", createMenu);
+menu.put("/edit", editMenu);
+menu.delete("/delete/:menu_id", deleteMenu);
 
 export default menu;

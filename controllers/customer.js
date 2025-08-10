@@ -4,6 +4,25 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 // Only unexpected errors reach here — return generic 500
 
+const getCustomers = async (req, res) => {
+  try {
+    const data = await pool.query(`SELECT * FROM customers`);
+    const customers = data.rows;
+
+    if (customers.length === 0) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No customers found" });
+    }
+
+    return res.status(200).json({ success: true, customers });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ success: false, message: "Failed to get customers" });
+  }
+};
+
 // Login
 const customerLogin = async (req, res) => {
   const { identifier, password } = req.body;
@@ -217,14 +236,16 @@ const customerInfo = async (req, res) => {
       customer_id,
     ]);
 
-    if (!info.rows[0]) {
+    const user_data = info.rows[0];
+
+    if (!user_data) {
       return res.status(404).json({ message: "User not found" });
     }
 
     return res.status(200).json({
       success: true,
       message: "Customer info fetched successfully",
-      user_data: info.rows[0],
+      user_data,
     });
   } catch (error) {
     return res.status(500).json({
@@ -258,7 +279,7 @@ const customerDeleteAccount = async (req, res) => {
 
 // ---------------- CUSTOMER ORDER ----------------
 
-const orderHistory = async (req, res) => {
+const customerOrderHistory = async (req, res) => {
   const customer_id = req.customer.id;
 
   try {
@@ -321,7 +342,7 @@ const orderHistory = async (req, res) => {
   }
 };
 
-const deleteOrderHistory = async (req, res) => {
+const customerDeleteOrderHistory = async (req, res) => {
   const order_id = req.query.order_id;
 
   if (!order_id) {
@@ -340,6 +361,7 @@ const deleteOrderHistory = async (req, res) => {
 };
 
 export {
+  getCustomers,
   customerRegister,
   customerAddOrder,
   customerEditInfo,
@@ -347,6 +369,6 @@ export {
   customerLogin,
   customerLogout,
   customerDeleteAccount,
-  orderHistory,
-  deleteOrderHistory,
+  customerOrderHistory,
+  customerDeleteOrderHistory,
 };

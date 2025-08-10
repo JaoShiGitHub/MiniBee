@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { insertMenu } from "../controllers/admin";
+import { getOrders } from "../controllers/order";
 const admin = Router();
 
-admin.post("/create-menu", insertMenu);
+admin.post("/orders", getOrders);
 
 export default admin;
