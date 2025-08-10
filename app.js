@@ -5,9 +5,10 @@ import cookieParser from "cookie-parser";
 const app = express();
 dotenv.config();
 // Routes
-import menu from "./routers/menu_routes.js";
-import customer from "./routers/customer_routes.js";
-import admin from "./routers/admin_routes.js";
+import menuRouter from "./routers/menu_routes.js";
+import customerRouter from "./routers/customer_routes.js";
+import adminRouter from "./routers/admin_routes.js";
+import authRouter from "./routers/auth_routes.js";
 
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
@@ -18,9 +19,10 @@ app.use(
   })
 );
 
-app.use("/customer", customer);
-app.use("/menu", menu);
-app.use("/admin", admin);
+app.use("/customer", customerRouter);
+app.use("/menu", menuRouter);
+app.use("/admin", adminRouter);
+app.use("/auth", authRouter);
 
 app.listen(4000, () => {
   console.log("Server is listening at port 4000");

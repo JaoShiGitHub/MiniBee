@@ -1,44 +1,31 @@
 import { Router } from "express";
 // Middlewares
-import authUser from "../middlewares/auth.js";
-import {
-  checkUserConflict,
-  validateLoginCustomer,
-  validateRegisterCustomer,
-} from "../middlewares/customer_middlewares.js";
+import authUser from "../middlewares/userAuth.js";
 // Controllers
 import {
-  customerRegister,
   customerAddOrder,
   customerEditInfo,
   customerInfo,
-  customerLogin,
-  customerLogout,
   customerDeleteAccount,
   customerOrderHistory,
   customerDeleteOrderHistory,
 } from "../controllers/customer.js";
-import checkLogin from "../controllers/check_login.js";
 
-const customer = Router();
+const customerRouter = Router();
 
 // ---- POST ----
-customer.post("/login", validateLoginCustomer, customerLogin);
-customer.post(
-  "/register",
-  [validateRegisterCustomer, checkUserConflict],
-  customerRegister
-);
-customer.post("/order", authUser, customerAddOrder);
-customer.post("/logout", customerLogout);
+customerRouter.post("/order", authUser, customerAddOrder);
 // ---- GET ----
-customer.get("/info", authUser, customerInfo);
-customer.get("/status", authUser, checkLogin);
-customer.get("/order-history", authUser, customerOrderHistory);
+customerRouter.get("/info", authUser, customerInfo);
+customerRouter.get("/order-history", authUser, customerOrderHistory);
 // ---- EDIT ----
-customer.put("/edit", authUser, customerEditInfo);
+customerRouter.put("/edit", authUser, customerEditInfo);
 // ---- DELETE ----
-customer.delete("/delete/order-history", authUser, customerDeleteOrderHistory);
-customer.delete("/delete", authUser, customerDeleteAccount);
+customerRouter.delete(
+  "/delete/order-history",
+  authUser,
+  customerDeleteOrderHistory
+);
+customerRouter.delete("/delete", authUser, customerDeleteAccount);
 
-export default customer;
+export default customerRouter;

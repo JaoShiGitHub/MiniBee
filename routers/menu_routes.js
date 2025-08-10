@@ -5,14 +5,14 @@ import {
   getMenu,
   deleteMenu,
 } from "../controllers/menu.js";
-import authUser from "../middlewares/auth.js";
+import authUser from "../middlewares/userAuth.js";
 
-const menu = Router();
+const menuRouter = Router();
 
-menu.get("/", getMenu);
+menuRouter.get("/", getMenu);
 // --v-- ADMIN ONLY --v--
-menu.post("/create", createMenu);
-menu.put("/edit", editMenu);
-menu.delete("/delete/:menu_id", deleteMenu);
+menuRouter.post("/create", createMenu);
+menuRouter.put("/edit", editMenu);
+menuRouter.delete("/delete/:menu_id", deleteMenu);
 
-export default menu;
+export default menuRouter;

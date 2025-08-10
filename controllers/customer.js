@@ -1,7 +1,4 @@
-import { isEmail } from "../utils/common.js";
 import { pool } from "../utils/db.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 // Only unexpected errors reach here — return generic 500
 
 const getCustomers = async (req, res) => {
@@ -20,107 +17,6 @@ const getCustomers = async (req, res) => {
     return res
       .status(500)
       .json({ success: false, message: "Failed to get customers" });
-  }
-};
-
-// Login
-const customerLogin = async (req, res) => {
-  const { identifier, password } = req.body;
-
-  const type = isEmail(identifier) ? "Email" : "Username";
-  try {
-    const data = await pool.query(
-      `SELECT * FROM customers WHERE ${type.toLowerCase()} = $1`,
-      [identifier]
-    );
-
-    const customer = data.rows[0];
-
-    if (!customer) {
-      return res.status(404).json({ message: `${type} not found` });
-    }
-
-    const isValidPassword = await bcrypt.compare(password, customer.password);
-
-    if (!isValidPassword) {
-      return res.status(400).json({ message: `Invalid Password` });
-    }
-
-    const token = jwt.sign(
-      {
-        id: customer.id,
-        username: customer.username,
-        firstName: customer.firstname,
-      },
-      process.env.SECRET_KEY,
-      {
-        expiresIn: "1d",
-      }
-    );
-
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "Strict",
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-
-    return res
-      .status(200)
-      .json({ success: true, message: "Logged in successfully." });
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// Logout
-const customerLogout = (req, res) => {
-  try {
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "Strict",
-    });
-
-    return res
-      .status(200)
-      .json({ success: true, message: "Logged out successfully" });
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-// Register
-const customerRegister = async (req, res) => {
-  const { username, firstName, lastName, tel, email, birthday, allergy } =
-    req.body;
-  const customer = { password: req.body.password };
-
-  const salt = await bcrypt.genSalt(10);
-  customer.password = await bcrypt.hash(customer.password, salt);
-
-  try {
-    await pool.query(
-      `INSERT INTO customers (username, password, firstname, lastname, tel, email, allergy, birthday ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-      [
-        username,
-        customer.password,
-        firstName,
-        lastName,
-        tel,
-        email,
-        allergy,
-        birthday,
-      ]
-    );
-    return res
-      .status(201)
-      .json({ success: true, message: "New customer has been created" });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: `Error inserting user: ${error.message}`,
-    });
   }
 };
 
@@ -362,12 +258,9 @@ const customerDeleteOrderHistory = async (req, res) => {
 
 export {
   getCustomers,
-  customerRegister,
   customerAddOrder,
   customerEditInfo,
   customerInfo,
-  customerLogin,
-  customerLogout,
   customerDeleteAccount,
   customerOrderHistory,
   customerDeleteOrderHistory,
