@@ -26,4 +26,6 @@ const authUser = (req, res, next) => {
   }
 };
 
+const authAdmin = async (req, res) => {};
+
 export default authUser;

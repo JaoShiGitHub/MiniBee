@@ -10,12 +10,6 @@ const loginUser = async (req, res) => {
   const type = isEmail(identifier) ? "Email" : "Username";
   const user = user_type.toLowerCase();
 
-  if (user !== "customers" && user !== "admins") {
-    return res
-      .status(400)
-      .json({ message: "user type must be customers or admins only" });
-  }
-
   try {
     const data = await pool.query(
       `SELECT * FROM ${user} WHERE ${type.toLowerCase()} = $1`,

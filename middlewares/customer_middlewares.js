@@ -2,8 +2,16 @@ import { pool } from "../utils/db.js";
 
 // Login
 const validateLoginCustomer = async (req, res, next) => {
-  const { identifier, password } = req.body;
+  const { identifier, password, user_type } = req.body;
   // identifier = email || username
+
+  const user = user_type.toLowerCase();
+
+  if (user !== "customers" && user !== "admins") {
+    return res
+      .status(400)
+      .json({ message: "user type must be customers or admins only" });
+  }
 
   if (!identifier) {
     return res
