@@ -9,7 +9,7 @@ import authUser from "../middlewares/auth.js";
 
 const menu = Router();
 
-menu.get("/", authUser, getMenu);
+menu.get("/", getMenu);
 // --v-- ADMIN ONLY --v--
 menu.post("/create", createMenu);
 menu.put("/edit", editMenu);
