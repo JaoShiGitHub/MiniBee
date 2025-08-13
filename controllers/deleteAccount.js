@@ -1,5 +1,8 @@
+import { pool } from "../utils/db.js";
+
 const deleteAccount = async (req, res) => {
   const user_id = req.user.id;
+
   const TABLE =
     req.user.role.toLowerCase() === "customer" ? "customers" : "admins";
 
