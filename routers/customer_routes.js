@@ -6,10 +6,10 @@ import {
   customerAddOrder,
   customerEditInfo,
   customerInfo,
-  customerDeleteAccount,
   customerOrderHistory,
   customerDeleteOrderHistory,
 } from "../controllers/customer.js";
+import deleteAccount from "../controllers/deleteAccount.js";
 
 const customerRouter = Router();
 
@@ -26,6 +26,6 @@ customerRouter.delete(
   authUser,
   customerDeleteOrderHistory
 );
-customerRouter.delete("/delete", authUser, customerDeleteAccount);
+customerRouter.delete("/delete", authUser, deleteAccount);
 
 export default customerRouter;

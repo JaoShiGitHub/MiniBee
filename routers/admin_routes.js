@@ -3,6 +3,7 @@ import { getOrders, getOrdersByCustomerID } from "../controllers/order.js";
 import { getAdminById, getAdmins } from "../controllers/admin.js";
 import { getCustomers } from "../controllers/customer.js";
 import { isAdmin, authUser } from "../middlewares/userAuth.js";
+import deleteAccount from "../controllers/deleteAccount.js";
 
 const adminRouter = Router();
 const adminMiddleware = [authUser, isAdmin];
@@ -16,5 +17,6 @@ adminRouter.get(
   getOrdersByCustomerID
 );
 adminRouter.get("/orders", adminMiddleware, getOrders);
+adminRouter.delete("/delete", adminMiddleware, deleteAccount);
 
 export default adminRouter;
