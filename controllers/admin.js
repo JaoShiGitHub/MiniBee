@@ -20,9 +20,9 @@ const getAdmins = async (req, res) => {
 };
 
 const getAdminById = async (req, res) => {
-  const admin_id = req.user.admin_id;
+  const admin_id = req.user.id;
   try {
-    const data = await pool.query("SELECT * FROM admins WHERE admin_id = $1", [
+    const data = await pool.query("SELECT * FROM admins WHERE id = $1", [
       admin_id,
     ]);
     const admin = data.rows[0];

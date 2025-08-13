@@ -29,7 +29,7 @@ const authUser = (req, res, next) => {
 const isAdmin = async (req, res, next) => {
   const user = req.user.role;
 
-  if (user !== "admins") {
+  if (user !== "admin") {
     return res.status(403).json({ message: "Access forbidden: admins only" });
   }
   next();

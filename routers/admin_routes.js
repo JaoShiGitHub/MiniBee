@@ -8,9 +8,13 @@ const adminRouter = Router();
 const adminMiddleware = [authUser, isAdmin];
 
 adminRouter.get("/", adminMiddleware, getAdmins);
-adminRouter.get("/admin", adminMiddleware, getAdminById);
+adminRouter.get("/info", adminMiddleware, getAdminById);
 adminRouter.get("/customers", adminMiddleware, getCustomers);
-adminRouter.get("/customer-orders", adminMiddleware, getOrdersByCustomerID);
-adminRouter.post("/orders", adminMiddleware, getOrders);
+adminRouter.get(
+  "/customer-orders/:customer_id",
+  adminMiddleware,
+  getOrdersByCustomerID
+);
+adminRouter.get("/orders", adminMiddleware, getOrders);
 
 export default adminRouter;
