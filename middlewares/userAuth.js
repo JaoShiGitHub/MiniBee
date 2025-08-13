@@ -16,7 +16,7 @@ const authUser = (req, res, next) => {
       return res.status(401).json({ message: "Invalid Token" });
     }
 
-    req.customer = decoded_token;
+    req.user = decoded_token;
 
     next();
   } catch (error) {
@@ -27,7 +27,7 @@ const authUser = (req, res, next) => {
 };
 
 const isAdmin = async (req, res, next) => {
-  const user = req.customer.role;
+  const user = req.user.role;
 
   if (user !== "admins") {
     return res.status(403).json({ message: "Access forbidden: admins only" });
