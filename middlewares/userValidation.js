@@ -28,6 +28,8 @@ const validateLoginUser = async (req, res, next) => {
 
 // Register
 const validateRegisterUser = async (req, res, next) => {
+  const { allergy, admin_role, user_type } = req.body;
+
   const requiredFields = {
     username: req.body.username,
     password: req.body.password,
@@ -36,17 +38,15 @@ const validateRegisterUser = async (req, res, next) => {
     tel: req.body.tel,
     email: req.body.email,
     birthday: req.body.birthday,
-    allergy: req.body.allergy,
   };
-  const user = req.body.user_type;
 
-  if (user !== "customer" && user !== "admin") {
+  if (user_type !== "customer" && user_type !== "admin") {
     return res
       .status(400)
       .json({ message: "user type must be customer or admin" });
   }
 
-  if (user === "admin" && !req.body.admin_role) {
+  if (user_type === "admin" && !admin_role) {
     return res.status(400).json({ message: "Admin role is required" });
   }
 
@@ -58,6 +58,10 @@ const validateRegisterUser = async (req, res, next) => {
         } is required!`,
       });
     }
+  }
+
+  if (user_type === "customer" && !allergy) {
+    return res.status(400).json({ message: "Allergy is required" });
   }
 
   if (requiredFields.username.length > 20) {

@@ -8,11 +8,11 @@ const loginUser = async (req, res) => {
   const { identifier, password, user_type } = req.body;
 
   const type = isEmail(identifier) ? "Email" : "Username";
-  const userType = user_type.toLowerCase();
+  const TABLE = user_type.toLowerCase() === "customer" ? "customers" : "admins";
 
   try {
     const data = await pool.query(
-      `SELECT * FROM ${userType} WHERE ${type.toLowerCase()} = $1`,
+      `SELECT * FROM ${TABLE} WHERE ${type.toLowerCase()} = $1`,
       [identifier]
     );
 
@@ -67,13 +67,15 @@ const registerUser = async (req, res) => {
     birthday,
     allergy,
     admin_role,
+    user_type,
   } = req.body;
   const user = { password: req.body.password };
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(user.password, salt);
+  const userType = user_type.toLowerCase();
 
   try {
-    if (admin_role) {
+    if (userType === "admin") {
       await pool.query(
         `INSERT INTO admins (username, firstname, lastname, tel, email, admin_role, password) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
         [username, firstName, lastName, tel, email, admin_role, user.password]
