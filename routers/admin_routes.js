@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { getOrders, getOrdersByCustomerID } from "../controllers/order.js";
-import { getAdminById, getAdmins } from "../controllers/admin.js";
+import { editInfo, getAdminById, getAdmins } from "../controllers/admin.js";
 import { getCustomers } from "../controllers/customer.js";
 import { isAdmin, authUser } from "../middlewares/userAuth.js";
 import deleteAccount from "../controllers/deleteAccount.js";
@@ -17,6 +17,7 @@ adminRouter.get(
   getOrdersByCustomerID
 );
 adminRouter.get("/orders", adminMiddleware, getOrders);
+adminRouter.put("/edit-info", adminMiddleware, editInfo);
 adminRouter.delete("/delete", adminMiddleware, deleteAccount);
 
 export default adminRouter;
