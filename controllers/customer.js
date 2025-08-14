@@ -22,7 +22,7 @@ const getCustomers = async (req, res) => {
 
 // Add New Order
 const customerAddOrder = async (req, res) => {
-  const { note, diningStatus, orders } = req.body;
+  const { note, diningStatus, order } = req.body;
   const customer_id = req.user.id;
   const payment_status = "Pending";
   const status = "Order Placed";
@@ -41,8 +41,8 @@ const customerAddOrder = async (req, res) => {
     String(now.getSeconds()).padStart(2, "0");
 
   const order_id = Math.random().toString(36).substring(2, 18);
-  const total_price = orders.reduce(
-    (total, order) => total + order.price * order.count,
+  const total_price = order.reduce(
+    (total, item) => total + item.price * item.count,
     0
   );
 
@@ -62,10 +62,10 @@ const customerAddOrder = async (req, res) => {
     );
     console.log("test customer_orders: ", response);
 
-    const orderQueries = orders.map((order) => {
+    const orderQueries = order.map((item) => {
       return pool.query(
         `INSERT INTO order_items (order_id, product_id ,product_name, product_price, amount) VALUES ($1, $2, $3, $4, $5)`,
-        [order_id, order.menu_id, order.name, order.price, order.count]
+        [order_id, item.menu_id, item.name, item.price, item.count]
       );
     });
 
@@ -151,29 +151,6 @@ const customerInfo = async (req, res) => {
     });
   }
 };
-
-// Delete Customer Account
-const customerDeleteAccount = async (req, res) => {
-  const customer_id = req.user.id;
-
-  try {
-    await pool.query("DELETE FROM customers WHERE id = $1", [customer_id]);
-
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "Strict",
-    });
-
-    return res.status(204).send();
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: `Failed to delete account: ${error.message}`,
-    });
-  }
-};
-
 // ---------------- CUSTOMER ORDER ----------------
 
 const customerOrderHistory = async (req, res) => {
@@ -262,7 +239,6 @@ export {
   customerAddOrder,
   customerEditInfo,
   customerInfo,
-  customerDeleteAccount,
   customerOrderHistory,
   customerDeleteOrderHistory,
 };
