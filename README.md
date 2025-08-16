@@ -4,12 +4,12 @@ Backend system for the admin and customer sides of an e-commerce web application
 
 ### Tech Stack
 
-**Frontend:** React, JavaScript, HTML, TailwindCSS
-**Backend:** Node.js, Express.js, SQL
-**Database:** PostgreSQL
+* **Frontend:** React, JavaScript, HTML, TailwindCSS
+* **Backend:** Node.js, Express.js, SQL
+* **Database:** PostgreSQL
 
 ### Features
 
-- - User authentication (sign up / login / logout)
-- - Customer: Manage profile / Create orders / View menu / View order history
-- - Admin: Manage products (create, update, delete), View customer orders, Manage profile, View admins
+- User authentication (sign up / login / logout)
+- Customer: Manage profile / Create orders / View menu / View order history
+- Admin: Manage products (create, update, delete), View customer orders, Manage profile, View admins
