@@ -20,7 +20,7 @@ const getOrders = async (req, res) => {
 };
 
 const getOrdersByCustomerID = async (req, res) => {
-  const customer_id = req.params.customer_id;
+  const { customer_id } = req.params;
 
   try {
     const data = await pool.query(

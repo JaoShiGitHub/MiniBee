@@ -22,8 +22,8 @@ const getCustomers = async (req, res) => {
 
 // Add New Order
 const customerAddOrder = async (req, res) => {
-  const { note, diningStatus, orders } = req.body;
-  const customer_id = req.customer.id;
+  const { note, diningStatus, order } = req.body;
+  const customer_id = req.user.id;
   const payment_status = "Pending";
   const status = "Order Placed";
   const now = new Date();
@@ -41,13 +41,13 @@ const customerAddOrder = async (req, res) => {
     String(now.getSeconds()).padStart(2, "0");
 
   const order_id = Math.random().toString(36).substring(2, 18);
-  const total_price = orders.reduce(
-    (total, order) => total + order.price * order.count,
+  const total_price = order.reduce(
+    (total, item) => total + item.price * item.count,
     0
   );
 
   try {
-    await pool.query(
+    const response = await pool.query(
       `INSERT INTO customer_orders (order_id, customer_id, status, time, description, dining_status, payment_status, total) VALUES ($1, $2, $3, $4, $5, $6, $7, $8 )`,
       [
         order_id,
@@ -60,11 +60,12 @@ const customerAddOrder = async (req, res) => {
         total_price,
       ]
     );
+    console.log("test customer_orders: ", response);
 
-    const orderQueries = orders.map((order) => {
+    const orderQueries = order.map((item) => {
       return pool.query(
         `INSERT INTO order_items (order_id, product_id ,product_name, product_price, amount) VALUES ($1, $2, $3, $4, $5)`,
-        [order_id, order.menu_id, order.name, order.price, order.count]
+        [order_id, item.menu_id, item.name, item.price, item.count]
       );
     });
 
@@ -94,8 +95,8 @@ const customerEditInfo = async (req, res) => {
     location,
     image,
   } = req.body;
-  const customer_id = req.customer.id;
-  const imageBuffer = Buffer.from(image.split(",")[1], "base64");
+  const customer_id = req.user.id;
+  const imageBuffer = image ? Buffer.from(image.split(",")[1], "base64") : null;
 
   try {
     await pool.query(
@@ -126,7 +127,7 @@ const customerEditInfo = async (req, res) => {
 
 // Get Customer's Info
 const customerInfo = async (req, res) => {
-  const customer_id = req.customer.id;
+  const customer_id = req.user.id;
   try {
     const info = await pool.query("SELECT * FROM customers WHERE id = $1", [
       customer_id,
@@ -150,33 +151,10 @@ const customerInfo = async (req, res) => {
     });
   }
 };
-
-// Delete Customer Account
-const customerDeleteAccount = async (req, res) => {
-  const customer_id = req.customer.id;
-
-  try {
-    await pool.query("DELETE FROM customers WHERE id = $1", [customer_id]);
-
-    res.clearCookie("token", {
-      httpOnly: true,
-      secure: true,
-      sameSite: "Strict",
-    });
-
-    return res.status(204).send();
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: `Failed to delete account: ${error.message}`,
-    });
-  }
-};
-
 // ---------------- CUSTOMER ORDER ----------------
 
 const customerOrderHistory = async (req, res) => {
-  const customer_id = req.customer.id;
+  const customer_id = req.user.id;
 
   try {
     const data = await pool.query(
@@ -261,7 +239,6 @@ export {
   customerAddOrder,
   customerEditInfo,
   customerInfo,
-  customerDeleteAccount,
   customerOrderHistory,
   customerDeleteOrderHistory,
 };

@@ -1,16 +1,16 @@
 import { pool } from "../utils/db.js";
 
 // Login
-const validateLoginCustomer = async (req, res, next) => {
+const validateLoginUser = async (req, res, next) => {
   const { identifier, password, user_type } = req.body;
   // identifier = email || username
 
   const user = user_type.toLowerCase();
 
-  if (user !== "customers" && user !== "admins") {
+  if (user !== "customer" && user !== "admin") {
     return res
       .status(400)
-      .json({ message: "user type must be customers or admins only" });
+      .json({ message: "user type must be customer or admin only" });
   }
 
   if (!identifier) {
@@ -27,7 +27,9 @@ const validateLoginCustomer = async (req, res, next) => {
 };
 
 // Register
-const validateRegisterCustomer = async (req, res, next) => {
+const validateRegisterUser = async (req, res, next) => {
+  const { allergy, admin_role, user_type } = req.body;
+
   const requiredFields = {
     username: req.body.username,
     password: req.body.password,
@@ -37,20 +39,15 @@ const validateRegisterCustomer = async (req, res, next) => {
     email: req.body.email,
     birthday: req.body.birthday,
   };
-  const user = req.body.user_type;
 
-  if (user !== "customers" && user !== "admins") {
+  if (user_type !== "customer" && user_type !== "admin") {
     return res
       .status(400)
-      .json({ message: "user type must be customers or admins only" });
+      .json({ message: "user type must be customer or admin" });
   }
 
-  if (!requiredFields.username) {
-    return res.status(400).json({ message: "Username is required!" });
-  } else if (requiredFields.username.length > 20) {
-    return res.status(400).json({
-      message: "Username must be less than 20 characters.",
-    });
+  if (user_type === "admin" && !admin_role) {
+    return res.status(400).json({ message: "Admin role is required" });
   }
 
   for (const [field, value] of Object.entries(requiredFields)) {
@@ -63,33 +60,43 @@ const validateRegisterCustomer = async (req, res, next) => {
     }
   }
 
+  if (user_type === "customer" && !allergy) {
+    return res.status(400).json({ message: "Allergy is required" });
+  }
+
+  if (requiredFields.username.length > 20) {
+    return res.status(400).json({
+      message: "Username must be less than 20 characters.",
+    });
+  }
+
   next();
 };
 
 const checkUserConflict = async (req, res, next) => {
   const username = req.body.username;
+  const userType = req.body.user_type;
+  const TABLE = userType === "customer" ? "customers" : "admins";
 
   try {
     const response = await pool.query(
-      `SELECT * FROM customers WHERE username = $1`,
+      `SELECT * FROM ${TABLE} WHERE username = $1`,
       [username]
     );
 
     const user_account = response.rows[0];
 
     if (user_account) {
-      console.log("The username is not available");
-
       return res.status(409).json({
         success: false,
         message: "The username is not available. Please try another.",
       });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    return res.status(500).json({ success: false, message: error.message });
   }
 
   next();
 };
 
-export { validateRegisterCustomer, validateLoginCustomer, checkUserConflict };
+export { validateRegisterUser, validateLoginUser, checkUserConflict };

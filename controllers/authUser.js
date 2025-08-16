@@ -8,21 +8,21 @@ const loginUser = async (req, res) => {
   const { identifier, password, user_type } = req.body;
 
   const type = isEmail(identifier) ? "Email" : "Username";
-  const user = user_type.toLowerCase();
+  const TABLE = user_type.toLowerCase() === "customer" ? "customers" : "admins";
 
   try {
     const data = await pool.query(
-      `SELECT * FROM ${user} WHERE ${type.toLowerCase()} = $1`,
+      `SELECT * FROM ${TABLE} WHERE ${type.toLowerCase()} = $1`,
       [identifier]
     );
 
-    const customer = data.rows[0];
+    const user = data.rows[0];
 
-    if (!customer) {
+    if (!user) {
       return res.status(404).json({ message: `${type} not found` });
     }
 
-    const isValidPassword = await bcrypt.compare(password, customer.password);
+    const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
       return res.status(400).json({ message: `Invalid Password` });
@@ -30,10 +30,10 @@ const loginUser = async (req, res) => {
 
     const token = jwt.sign(
       {
-        id: customer.id,
-        username: customer.username,
-        firstName: customer.firstname,
-        role: user,
+        id: user.id,
+        username: user.username,
+        firstName: user.firstname,
+        role: user_type,
       },
       process.env.SECRET_KEY,
       {
@@ -66,30 +66,39 @@ const registerUser = async (req, res) => {
     email,
     birthday,
     allergy,
+    admin_role,
     user_type,
   } = req.body;
-  const customer = { password: req.body.password };
-  const TABLE = user_type.toLowerCase();
+  const user = { password: req.body.password };
   const salt = await bcrypt.genSalt(10);
-  customer.password = await bcrypt.hash(customer.password, salt);
+  user.password = await bcrypt.hash(user.password, salt);
+  const userType = user_type.toLowerCase();
 
   try {
-    await pool.query(
-      `INSERT INTO ${TABLE} (username, password, firstname, lastname, tel, email, allergy, birthday ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-      [
-        username,
-        customer.password,
-        firstName,
-        lastName,
-        tel,
-        email,
-        allergy,
-        birthday,
-      ]
-    );
+    if (userType === "admin") {
+      await pool.query(
+        `INSERT INTO admins (username, firstname, lastname, tel, email, admin_role, password) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [username, firstName, lastName, tel, email, admin_role, user.password]
+      );
+    } else {
+      await pool.query(
+        `INSERT INTO customers (username, password, firstname, lastname, tel, email, allergy, birthday ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+        [
+          username,
+          user.password,
+          firstName,
+          lastName,
+          tel,
+          email,
+          allergy,
+          birthday,
+        ]
+      );
+    }
+
     return res
       .status(201)
-      .json({ success: true, message: "New customer has been created" });
+      .json({ success: true, message: "New user has been created" });
   } catch (error) {
     return res.status(500).json({
       success: false,

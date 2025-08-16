@@ -48,7 +48,18 @@ const createMenu = async (req, res) => {
 
 const editMenu = async (req, res) => {
   const { menu_id, menu_name, ingredients, details, price, image } = req.body;
-  const imageBuffer = Buffer.from(image.split(",")[1], "base64");
+
+  let imageBuffer = null;
+
+  if (image) {
+    try {
+      imageBuffer = Buffer.from(image.split(",")[1], "base64");
+    } catch {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid image format" });
+    }
+  }
 
   try {
     await pool.query(
@@ -66,7 +77,7 @@ const editMenu = async (req, res) => {
 };
 
 const deleteMenu = async (req, res) => {
-  const menu_id = req.query.menu_id;
+  const menu_id = req.params.menu_id;
   try {
     const result = await pool.query(
       `DELETE FROM menu WHERE menu_id = $1 RETURNING *`,
