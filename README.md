@@ -4,9 +4,9 @@ Backend system for the admin and customer sides of an e-commerce web application
 
 ### Tech Stack
 
-**Frontend:** React, JavaScript, HTML, TailwindCSS
-**Backend:** Node.js, Express.js, SQL
-**Database:** PostgreSQL
+* **Frontend:** React, JavaScript, HTML, TailwindCSS
+* **Backend:** Node.js, Express.js, SQL
+* **Database:** PostgreSQL
 
 ### Features
 
