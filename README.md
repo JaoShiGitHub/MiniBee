@@ -13,3 +13,9 @@ Backend system for the admin and customer sides of an e-commerce web application
 - User authentication (sign up / login / logout)
 - Customer: Manage profile / Create orders / View menu / View order history
 - Admin: Manage products (create, update, delete), View customer orders, Manage profile, View admins
+
+## API Endpoints 
+
+| Method | Endpoint | Description | body | access | 
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| /customer/info | GET | Get data of a customer | - | Customer |
