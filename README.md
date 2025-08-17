@@ -30,3 +30,10 @@ Backend system for the admin and customer sides of an e-commerce web application
 | /menu/create | POST | Create new menu | Admin | `{ "name": string, "ingredients": string, "details": string, "price": number, "image": string (base64) }` | `201 Created { "success": true, "message": string }` |
 | /menu/edit | PUT | Update menu | Admin | `{ "menu_id": number, "menu_name": string, "ingredients": string, "details": string, "price": number, "image": string (base64) }` | `200 OK { "success": true, "message": string }` |
 | /menu/delete/:menu_id | DELETE | Delete menu | Admin | - | `200 OK { "success": true, "message": string }` |
+| /customer/info | GET | Get customer details | Customer | - | `200 OK { "success": true, "message": string, "customer": [...] }` |
+| /customer/order-history | GET | Get orders | Customer | - | `200 OK { "success": true, "message": string, "orders": [...] }` |
+| /customer/edit | PUT | Update customer | Customer | `{ "username": string,"first_name": string,"last_name": string, "tel": string, "email": string, "allergy": string, "birthday": string, "location": string, "image": string (base64), }` | `200 OK { "success": true, "message": string, "orders": [...] }` |
+| /customer/order | POST | Create order | Customer | `{ "note": string, "dining_status": string, "order_items": [...]}` | `201 Created { "success": true,  "message": string }` |
+| /customer/delete/order-history/:order_id | DELETE | Delete completed order | Customer | - | `200 OK { "success": true,  "message": string }` |
+| /customer/delete | DELETE | Delete account | Customer | - | `204 No Content` |
+
