@@ -26,3 +26,7 @@ Backend system for the admin and customer sides of an e-commerce web application
 | /admin/orders | GET | Get all orders | Admin | - | `200 OK { "success": true, "message": string ,"orders": [...] }` |
 | /admin/edit-info | PUT | Update admin | Admin | `{ "username": string, "first_name": string, "last_name": string, "tel": string, "email": string, "admin_role": string, "image": string (base64) }` |
 | /admin/delete | DELETE | Delete account | Admin | - | `204 No Content` |
+| /menu | GET | Get all menu | Public | - | `200 OK { "success": true, "message": string ,"menu": [...] }` |
+| /menu/create | POST | Create new menu | Admin | `{ "name": string, "ingredients": string, "details": string, "price": number, "image": string (base64) }` | `201 Created { "success": true, "message": string }` |
+| /menu/edit | PUT | Update menu | Admin | `{ "menu_id": number, "menu_name": string, "ingredients": string, "details": string, "price": number, "image": string (base64) }` | `200 OK { "success": true, "message": string }` |
+| /menu/delete/:menu_id | DELETE | Delete menu | Admin | - | `200 OK { "success": true, "message": string }` |
