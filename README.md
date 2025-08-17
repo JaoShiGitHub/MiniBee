@@ -6,7 +6,7 @@ A simple backend system for e-commerce web applications, supporting both custome
 
 * **Frontend:** React, JavaScript, HTML, TailwindCSS
 * **Backend:** Node.js, Express.js, SQL
-* **Database:** PostgreSQL
+* **Database:** PostgreSQL (stores data, queried using SQL)
 * **Authentication:** JWT, bcrypt
 
 ### Features
@@ -14,6 +14,13 @@ A simple backend system for e-commerce web applications, supporting both custome
 * **Authentication:** Register, login, logout
 * **Customer:** Manage profile (view, update, delete), view menu, place orders, view order history
 * **Admin:** Manage profile (view, update, delete), manage products (create, update, delete), view customers and their orders, view admins
+
+### Setup & Installation
+
+* **Cloning the repo:** `https://github.com/JaoShiGitHub/minirest-backend.git`
+* **Install NPM:** `npm install` (You can use Yarn or PNPM if you prefer.)
+* **Install required dependencies:** `npm install bcrypt body-parser cookie-parser cors dotenv express jsonwebtoken pg`
+* **Start the server:** Run `npm start`
 
 ## API Endpoints 
 
