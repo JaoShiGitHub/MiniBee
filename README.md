@@ -18,4 +18,4 @@ Backend system for the admin and customer sides of an e-commerce web application
 
 | Method | Endpoint | Description | body | access | 
 | :-: | :-: | :-: | :-: | :-: |
-| /customer/info | GET | Get data of a customer | - | Customer |
+| /customer/info | <span color="lightblue">GET</span> | Get data of a customer | - | Customer |
