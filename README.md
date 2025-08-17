@@ -16,8 +16,9 @@ Backend system for the admin and customer sides of an e-commerce web application
 
 ## API Endpoints 
 
-| Method | Endpoint | Description | Access | Body | Success Response | Failure Response | 
-| :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| /auth/register | POST | Register a new user | Public | - | `201 Created { "success": true,  "message": string }` | `400 Bad Request (see details below)` |
-| /auth/login | POST | Login user | Public | `{ "identiter": string, "password": string}` | `200 OK { "success": true, "message": string }` | `400 Bad Request (see details below)` |
+| Method | Endpoint | Description | Access | Body | Response |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+| /auth/register | POST | Register a new user | Public | `{ "username": string, "first_name": string, "last_name": string, "tel": string, "email": string, "birthday": string, "password": string, "allergy": string, "admin_role": string, "user_type": "customer" or "admin"  }` | `201 Created { "success": true,  "message": string }` |
+| /auth/login | POST | Login user | Public | `{ "identiter": string, "password": string}` | `200 OK { "success": true, "message": string }` |
+| /admin | GET | Get all admins | Admin | - | `200 OK { "success": true, "message": string ,"admins": [...] }` |
 
