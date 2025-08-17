@@ -28,6 +28,7 @@ By storing the token in HTTP-only cookies, backend endpoints such as `/admin/edi
 
 <details>
 <summary>See API Endpoints</summary>
+  
 | Method | Endpoint | Description | Access | Body | Response |
 | :-: | :-: | :-: | :-: | :-: | :-: |
 | /auth/register | POST | Register a new user | Public | `{ "username": string, "first_name": string, "last_name": string, "tel": string, "email": string, "birthday": string, "password": string, "allergy": string, "admin_role": string, "user_type": "customer" or "admin"  }` | `201 Created { "success": true,  "message": string }` |
