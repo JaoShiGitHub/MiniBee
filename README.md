@@ -16,6 +16,7 @@ Backend system for the admin and customer sides of an e-commerce web application
 
 ## API Endpoints 
 
-| Method | Endpoint | Description | body | access | 
+| Method | Endpoint | Description | Body | Access | 
 | :-: | :-: | :-: | :-: | :-: |
-| /customer/info | <span color="lightblue">GET</span> | Get data of a customer | - | Customer |
+| /auth/register | POST | Register a new user | - | Public |
+| /auth/login | POST | Login user | `{ "identiter": string, "password": string}` | Public |
