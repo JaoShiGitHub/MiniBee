@@ -21,10 +21,10 @@ Backend system for the admin and customer sides of an e-commerce web application
 | /auth/register | POST | Register a new user | Public | `{ "username": string, "first_name": string, "last_name": string, "tel": string, "email": string, "birthday": string, "password": string, "allergy": string, "admin_role": string, "user_type": "customer" or "admin"  }` | `201 Created { "success": true,  "message": string }` |
 | /auth/login | POST | Login user | Public | `{ "identiter": string, "password": string}` | `200 OK { "success": true, "message": string }` |
 | /admin | GET | Get all admins | Admin | - | `200 OK { "success": true, "message": string ,"admins": [...] }` |
-| /admin/info | GET | Get admin details | Admin | - | `{ "username": string, "first_name": string, "last_name": string, "tel": string, "email": string, "admin_role": string, "image": string (base 64) }` | `200 OK { "success": true, "message": string ,"admin": [...] }` |
+| /admin/info | GET | Get admin details | Admin | - | `200 OK { "success": true, "message": string ,"admin": [...] }` |
 | /admin/customer-orders/:customer_id | GET | Get all orders of a customer | Admin | - | `200 OK { "success": true, "message": string ,"orders": [...] }` |
 | /admin/orders | GET | Get all orders | Admin | - | `200 OK { "success": true, "message": string ,"orders": [...] }` |
-| /admin/edit-info | PUT | Update admin | Admin | `{ "username": string, "first_name": string, "last_name": string, "tel": string, "email": string, "admin_role": string, "image": string (base64) }` |
+| /admin/edit-info | PUT | Update admin | Admin | `{ "username": string, "first_name": string, "last_name": string, "tel": string, "email": string, "admin_role": string, "image": string (base64) }` | `200 OK { "success": true, "message": string }` |
 | /admin/delete | DELETE | Delete account | Admin | - | `204 No Content` |
 | /menu | GET | Get all menu | Public | - | `200 OK { "success": true, "message": string ,"menu": [...] }` |
 | /menu/create | POST | Create new menu | Admin | `{ "name": string, "ingredients": string, "details": string, "price": number, "image": string (base64) }` | `201 Created { "success": true, "message": string }` |
