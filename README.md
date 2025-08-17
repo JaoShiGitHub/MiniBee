@@ -17,5 +17,5 @@ Backend system for the admin and customer sides of an e-commerce web application
 ## API Endpoints 
 
 | Method | Endpoint | Description | body | access | 
-| :-: | :-: | :-: | :-: | :-: | :-: |
+| :-: | :-: | :-: | :-: | :-: |
 | /customer/info | GET | Get data of a customer | - | Customer |
