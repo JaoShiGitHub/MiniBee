@@ -133,16 +133,16 @@ const customerInfo = async (req, res) => {
       customer_id,
     ]);
 
-    const user_data = info.rows[0];
+    const customer = info.rows[0];
 
-    if (!user_data) {
+    if (!customer) {
       return res.status(404).json({ message: "User not found" });
     }
 
     return res.status(200).json({
       success: true,
       message: "Customer info fetched successfully",
-      user_data,
+      customer,
     });
   } catch (error) {
     return res.status(500).json({
@@ -217,7 +217,7 @@ const customerOrderHistory = async (req, res) => {
 };
 
 const customerDeleteOrderHistory = async (req, res) => {
-  const order_id = req.query.order_id;
+  const order_id = req.params.order_id;
 
   if (!order_id) {
     return res.status(400).json({ message: "Missing order_id in query" });
@@ -228,7 +228,9 @@ const customerDeleteOrderHistory = async (req, res) => {
       order_id,
     ]);
 
-    return res.status(200).json({ message: "Order deleted successfully" });
+    return res
+      .status(200)
+      .json({ success: true, message: "Order deleted successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

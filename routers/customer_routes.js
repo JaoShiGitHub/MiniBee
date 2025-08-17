@@ -22,7 +22,7 @@ customerRouter.get("/order-history", authUser, customerOrderHistory);
 customerRouter.put("/edit", authUser, customerEditInfo);
 // ---- DELETE ----
 customerRouter.delete(
-  "/delete/order-history",
+  "/delete/:order_id",
   authUser,
   customerDeleteOrderHistory
 );
