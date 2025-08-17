@@ -1,18 +1,19 @@
 # MiniRest - Backend
 
-Backend system for the admin and customer sides of an e-commerce web application, MiniRest.
+A simple backend system for e-commerce web applications, supporting both customer and admin functionalities such as authentication, order management, and product management.
 
 ### Tech Stack
 
 * **Frontend:** React, JavaScript, HTML, TailwindCSS
 * **Backend:** Node.js, Express.js, SQL
 * **Database:** PostgreSQL
+* **Authentication:** JWT, bcrypt
 
 ### Features
 
-- User authentication (sign up / login / logout)
-- Customer: Manage profile / Create orders / View menu / View order history
-- Admin: Manage products (create, update, delete), View customer orders, Manage profile, View admins
+* **Authentication:** Register, login, logout
+* **Customer:** Manage profile (view, update, delete), view menu, place orders, view order history
+* **Admin:** Manage profile (view, update, delete), manage products (create, update, delete), view customers and their orders, view admins
 
 ## API Endpoints 
 
@@ -31,9 +32,9 @@ Backend system for the admin and customer sides of an e-commerce web application
 | /menu/edit | PUT | Update menu | Admin | `{ "menu_id": number, "menu_name": string, "ingredients": string, "details": string, "price": number, "image": string (base64) }` | `200 OK { "success": true, "message": string }` |
 | /menu/delete/:menu_id | DELETE | Delete menu | Admin | - | `200 OK { "success": true, "message": string }` |
 | /customer/info | GET | Get customer details | Customer | - | `200 OK { "success": true, "message": string, "customer": [...] }` |
-| /customer/order-history | GET | Get orders | Customer | - | `200 OK { "success": true, "message": string, "orders": [...] }` |
+| /customer/orders | GET | Get orders | Customer | - | `200 OK { "success": true, "message": string, "orders": [...] }` |
 | /customer/edit | PUT | Update customer | Customer | `{ "username": string,"first_name": string,"last_name": string, "tel": string, "email": string, "allergy": string, "birthday": string, "location": string, "image": string (base64), }` | `200 OK { "success": true, "message": string, "orders": [...] }` |
-| /customer/order | POST | Create order | Customer | `{ "note": string, "dining_status": string, "order_items": [...]}` | `201 Created { "success": true,  "message": string }` |
-| /customer/delete/order-history/:order_id | DELETE | Delete completed order | Customer | - | `200 OK { "success": true,  "message": string }` |
+| /customer/create/order | POST | Create order | Customer | `{ "note": string, "dining_status": string, "order_items": [...]}` | `201 Created { "success": true,  "message": string }` |
+| /customer/delete/:order_id | DELETE | Delete completed order | Customer | - | `200 OK { "success": true,  "message": string }` |
 | /customer/delete | DELETE | Delete account | Customer | - | `204 No Content` |
 
