@@ -2,7 +2,8 @@
 
 A simple backend system for e-commerce web applications, supporting both customer and admin functionalities such as authentication, order management, and product management.
 
-![Mini Bee](https://github.com/JaoShiGitHub/MiniBee/MiniBee.png?raw=true)
+![Mini Bee](https://github.com/JaoShiGitHub/MiniBee/blob/main/MiniBee.png?raw=true)
+
 
 ### Tech Stack
 
